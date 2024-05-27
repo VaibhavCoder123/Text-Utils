@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+// import { textrea } from "../App";
 
 export default function TextForm(props) {
   const handleUpClick = () => {
@@ -14,9 +15,7 @@ export default function TextForm(props) {
   };
 
   const handleCopyClick = () => {
-    var text = document.getElementById("myBox");
-    text.select();
-    navigator.clipboard.writeText(text.value);
+    navigator.clipboard.writeText(text);
     props.showAlert("text coppied", "success");
   };
 
@@ -37,6 +36,7 @@ export default function TextForm(props) {
   };
 
   const [text, setText] = useState("");
+
   return (
     <>
       <div
@@ -57,46 +57,54 @@ export default function TextForm(props) {
             rows="12"
           ></textarea>
         </div>
-        <button
-          className={`btn btn-outline-${
-            props.mode === "light" ? "dark" : "light"
-          } type="submit mx-1`}
-          onClick={handleUpClick}
-        >
-          Convert to UpperCase
-        </button>
-        <button
-          className={`btn btn-outline-${
-            props.mode === "light" ? "dark" : "light"
-          } type="submit mx-1`}
-          onClick={handleLoClick}
-        >
-          Convert to Lower Case
-        </button>
-        <button
-          className={`btn btn-outline-${
-            props.mode === "light" ? "dark" : "light"
-          } type="submit mx-1`}
-          onClick={handleExtraSpaces}
-        >
-          Remove Extra Spaces
-        </button>
-        <button
-          className={`btn btn-outline-${
-            props.mode === "light" ? "dark" : "light"
-          } type="submit mx-1`}
-          onClick={handleCopyClick}
-        >
-          Copy Text
-        </button>
-        <button
-          className={`btn btn-outline-${
-            props.mode === "light" ? "dark" : "light"
-          } type="submit mx-1`}
-          onClick={handleClearClick}
-        >
-          Clear
-        </button>
+        <div>
+          <button
+            className={`btn btn-outline-${
+              props.mode === "light" ? "dark" : "light"
+            } type="submit mx-1 my-1`}
+            onClick={handleUpClick}
+            disabled={text.length === 0}
+          >
+            Convert to UpperCase
+          </button>
+          <button
+            className={`btn btn-outline-${
+              props.mode === "light" ? "dark" : "light"
+            } type="submit mx-1 my-1`}
+            onClick={handleLoClick}
+            disabled={text.length === 0}
+          >
+            Convert to Lower Case
+          </button>
+
+          <button
+            className={`btn btn-outline-${
+              props.mode === "light" ? "dark" : "light"
+            } type="submit mx-1 my-1`}
+            onClick={handleExtraSpaces}
+            disabled={text.length === 0}
+          >
+            Remove Extra Spaces
+          </button>
+          <button
+            className={`btn btn-outline-${
+              props.mode === "light" ? "dark" : "light"
+            } type="submit mx-1 my-1`}
+            onClick={handleCopyClick}
+            disabled={text.length === 0}
+          >
+            Copy Text
+          </button>
+          <button
+            className={`btn btn-outline-${
+              props.mode === "light" ? "dark" : "light"
+            } type="submit mx-1 my-1`}
+            onClick={handleClearClick}
+            disabled={text.length === 0}
+          >
+            Clear
+          </button>
+        </div>
       </div>
       <div
         className="container my-2"
@@ -104,10 +112,21 @@ export default function TextForm(props) {
       >
         <h1>Your text summry</h1>
         <p>
-          {text.split(" ").length} words and {text.length} characters
+          {text.split(/\s+/).filter((element) => element.length !== 0).length}{" "}
+          words and {text.length} characters
         </p>
-        <p>{0.008 * text.split(" ").length} Minutes read</p>
-        <h2>Preview</h2>
+        <p>
+          {0.008 *
+            text.split(" ").filter((element) => element.length !== 0)
+              .length}{" "}
+          Minutes read
+        </p>
+      </div>
+      <div
+        className="container my-2"
+        style={{ color: props.mode === "light" ? "black" : "white" }}
+      >
+        <h1>Preview Here</h1>
         <p>
           {text.length > 0
             ? text
